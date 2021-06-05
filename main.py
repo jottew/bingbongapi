@@ -28,9 +28,9 @@ def log(request):
     try:
         message = dict(request.headers)["message"]
     except:
-        logger.info(f"\"{request.remote}\" accessed endpoint \"{request.path}\"")
+        logger.info(f"Accessed endpoint \"{request.path}\"")
     else:
-        logger.info(f"\"{request.remote}\" accessed endpoint \"{request.path}\" with message \"{message}\"")
+        logger.info(f"\"Accessed endpoint \"{request.path}\" with message \"{message}\"")
 
 @routes.post("/mock")
 async def mock(request):
