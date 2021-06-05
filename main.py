@@ -78,11 +78,6 @@ async def pp(request):
     pp = f"8{size}D"
     return web.json_response({"message": pp}, status=200, content_type="application/json")
 
-@routes.get("/ip")
-async def ip(request):
-    log(request)
-    return web.json_response({"message": str(request.remote)}, status=200, content_type="application/json")
-
 @routes.get("/endpoints")
 async def endpoints(request):
     log(request)
@@ -98,7 +93,13 @@ async def index(request):
     for route in list(routes):
         rootes[str(route.path)] = route.method
     text = "\n".join(f"{endpoint} - {rootes[endpoint]}" for endpoint in rootes)
-    return web.Response(text=text, status=200, content_type="application/json")
+    return web.Response(text=f"""
+Routes: {len(routes)}
+GET Routes: {''.join(route for route in rootes if rootes[route] == "GET")}
+POST Routes: {''.join(route for route in rootes if rootes[route] == "POST")}
+
+{text}
+""", status=200, content_type="application/json")
 
 app = web.Application()
 app.add_routes(routes)
