@@ -1,4 +1,5 @@
 import random
+import string
 import logging
 import coloredlogs
 from aiohttp import web
@@ -36,12 +37,25 @@ def log(request):
 async def mock(request):
     log(request)
     try:
+        logger.info(dict(request.headers))
         message = dict(request.headers)["message"]
     except KeyError:
         return web.json_response({"message": None, "error": f"Missing required argument \"message\""}, status=400, content_type="application/json")
     else:
         msg = "".join(m.upper() if random.randint(1,2) == 1 else m.lower() for m in message)
         return web.json_response({"message": msg, "error": None}, status=200, content_type="application/json")
+
+@routes.post("/password")
+async def password(request):
+    log(request)
+    try:
+        logger.info(dict(request.headers))
+        length = dict(request.headers)["length"]
+    except KeyError:
+        return web.json_response({"message": None, "error": f"Missing required argument \"length\""}, status=400, content_type="application/json")
+    else:
+        pw = "".join(random.choice(string.printable+string.ascii_letters+string.digits) for x in range(int(length)))
+        return web.json_response({"message": pw, "error": None}, status=200, content_type="application/json")
 
 @routes.post("/owoify")
 async def owo(request):
