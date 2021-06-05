@@ -95,8 +95,8 @@ async def index(request):
     text = "\n".join(f"{endpoint} - {rootes[endpoint]}" for endpoint in rootes)
     return web.Response(text=f"""
 Routes: {len(routes)}
-GET Routes: {len([''.join(route for route in rootes if rootes[route] == "GET")])}
-POST Routes: {len([''.join(route for route in rootes if rootes[route] == "POST")])}
+GET Routes: {len([route for route in rootes if rootes[route] == "GET"])}
+POST Routes: {len([route for route in rootes if rootes[route] == "POST"])}
 
 {text}
 """, status=200, content_type="application/json")
