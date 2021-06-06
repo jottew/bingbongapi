@@ -2,6 +2,7 @@ import random
 import string
 import logging
 import coloredlogs
+
 from aiohttp import web
 
 logger = logging.getLogger("API")
@@ -82,8 +83,7 @@ async def spoiler(request):
 @routes.get("/8ball")
 async def eightball(request):
     log(request)
-    answer = random.choice(eightball_answers)
-    return web.json_response({"message": answer}, status=200, content_type="application/json")
+    return web.json_response({"message": random.choice(eightball_answers)}, status=200, content_type="application/json")
 
 @routes.get("/pp")
 async def pp(request):
@@ -107,7 +107,8 @@ async def index(request):
     for route in list(routes):
         rootes[str(route.path)] = route.method
     text = "\n".join(f"{endpoint} - {rootes[endpoint]}" for endpoint in rootes)
-    return web.Response(text=f"""
+    return web.Response(text=f"""bingbongapi
+    
 Routes: {len(routes)}
 GET Routes: {len([route for route in rootes if rootes[route] == "GET"])}
 POST Routes: {len([route for route in rootes if rootes[route] == "POST"])}
